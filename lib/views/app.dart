@@ -8,7 +8,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "playbloc",
+      title: "PlayPoor",
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xff0b16e6),

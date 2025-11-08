@@ -17,7 +17,64 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     : super(InitialState()) {
     on<PlayerLoadEvent>(cargando);
     on<PlayEvent>(reproduciendo);
+    on<PauseEvent>(pausando);
+    on<PlayPauseEvent>(alternando);
     setup();
+  }
+
+  void setup() {
+    posicion = audioPlayer.onPositionChanged.listen((pos) {
+      if (state is PlayingState) {
+        final PlayingState estadoActual = state as PlayingState;
+        emit(estadoActual.copyWith(position: pos));
+      }
+    });
+
+    duracion = audioPlayer.onDurationChanged.listen((dur) {
+      if (state is PlayingState) {
+        final PlayingState estadoActual = state as PlayingState;
+        emit(estadoActual.copyWith(duration: dur));
+      }
+    });
+
+    estado = audioPlayer.onPlayerStateChanged.listen((event) {
+      if (state is! PlayingState) return;
+      final PlayingState estadoActual = state as PlayingState;
+
+      switch(event){
+        case PlayerState.playing:
+          if (!estadoActual.isPlaying) {
+            emit(estadoActual.copyWith(isPlaying: true));
+          }
+          break;
+        case PlayerState.paused:
+        case PlayerState.stopped:
+          if (estadoActual.isPlaying) {
+            emit(estadoActual.copyWith(isPlaying: false));
+          }
+          break;
+        case PlayerState.completed:
+          add(NextEvent());
+          break;
+        case PlayerState.disposed:
+          break;
+      }
+      /*if (state == PlayerState.playing) {
+        //player state de dart
+        if (event is PlayingState) {
+          if (!estadoActual.isPlaying) {
+            add(PlayEvent());
+          }
+        }
+      }
+      if (state == PlayerState.paused) {
+        if (event is PlayingState) {
+          if (estadoActual.isPlaying) {
+            add(PlayPauseEvent());
+          }
+        }
+      }*/
+    });
   }
 
   FutureOr<void> cargando(
@@ -65,41 +122,33 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     }
   }
 
-  void setup() {
-    posicion = audioPlayer.onPositionChanged.listen((event) {
-      if (state is PlayingState) {
-        final PlayingState estadoActual = state as PlayingState;
-        emit(estadoActual.copyWith(position: estadoActual.position));
+  FutureOr<void> pausando(PauseEvent event, Emitter<PlayState> emit) async {
+    if (state is PlayingState) {
+      try {
+        await audioPlayer.pause();
+        final estadoActual = state as PlayingState;
+        emit(estadoActual.copyWith(isPlaying: false));
+      } catch (e) {
+        emit(ErrorState("Error: No se pudo pausar"));
+        debugPrint(e.toString());
       }
-    });
-
-    duracion = audioPlayer.onDurationChanged.listen((event) {
-      if (state is PlayingState) {
-        final PlayingState estadoActual = state as PlayingState;
-        emit(estadoActual.copyWith(duration: estadoActual.duration));
-      }
-    });
-
-    estado = audioPlayer.onPlayerStateChanged.listen((event) {
-      //si la cancion se esta reproduciendo
-      if (state == PlayerState.playing){ //player state de dart
-        if (event is PlayingState){
-          final PlayingState estadoActual = event as PlayingState;
-          if (!estadoActual.isPlaying){
-            add (PlayEvent());
-          }
-        }
-      }
-      if (state == PlayerState.paused){
-        if (event is PlayingState){
-          final PlayingState estadoActual = event as PlayingState;
-          if (estadoActual.isPlaying){
-            add (PlayPauseEvent());
-          }
-        }
-      }
-    },);
+    }
   }
+
+  FutureOr<void> alternando(
+    PlayPauseEvent event,
+    Emitter<PlayState> emit,
+  ) async {
+    if (state is PlayingState) {
+      final estadoActual = state as PlayingState;
+      if (estadoActual.isPlaying) {
+        add(PauseEvent());
+      } else {
+        add(PlayEvent());
+      }
+    }
+  }
+
   @override
   Future<void> close() {
     estado?.cancel();

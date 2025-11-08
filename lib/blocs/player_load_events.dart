@@ -1,4 +1,4 @@
-import 'package:playerbloc/blocs/player_event.dart';//shittier
+import 'package:playerbloc/blocs/player_event.dart';
 
 class PlayerLoadEvent extends PlayerEvent {
   final int index;
