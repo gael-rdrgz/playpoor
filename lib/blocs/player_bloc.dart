@@ -46,7 +46,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
   }
 
   FutureOr<void> reproduciendo(PlayEvent event, Emitter<PlayState> emit) async {
-    //está en estado de reproduccion
+    //si está en estado de reproduccion
     if (state is PlayingState) {
       try {
         await audioPlayer?.resume();
@@ -102,7 +102,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
   }
   @override
   Future<void> close() {
-    // TODO: implement close
     estado?.cancel();
     posicion?.cancel();
     duracion?.cancel();
