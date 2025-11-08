@@ -1,0 +1,29 @@
+import 'package:playerbloc/blocs/player_event.dart';//shittier
+
+class PlayerLoadEvent extends PlayerEvent {
+  final int index;
+
+  const PlayerLoadEvent(this.index);
+
+  @override
+  List<Object> get props => [index];
+}
+
+class PlayEvent extends PlayerEvent {}
+
+class PauseEvent extends PlayerEvent {}
+
+class NextEvent extends PlayerEvent {}
+
+class PrevEvent extends PlayerEvent {}
+
+class PlayPauseEvent extends PlayerEvent {}
+
+class SeekEvent extends PlayerEvent {
+  final Duration position;
+
+  const SeekEvent(this.position);
+
+  @override
+  List<Object> get props => [position];
+}
