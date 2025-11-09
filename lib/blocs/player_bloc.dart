@@ -58,6 +58,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
           }
         }
       }
+
+      if (estadoActual.duration == estadoActual.position){
+        add(NextEvent());
+      }
     });
   }
 
