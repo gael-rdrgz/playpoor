@@ -72,7 +72,9 @@ class _PlayerState extends State<Player> {
               fontFamily: "DMSerif",
             ),
           ),
-
+            actions: <Widget>[
+              IconButton(onPressed: (){}, icon: Icon(Icons.settings), iconSize: 24,)
+            ],
         ),
         body: SafeArea(
           child: Column(
