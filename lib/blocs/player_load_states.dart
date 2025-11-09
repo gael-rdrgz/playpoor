@@ -39,7 +39,9 @@ class PlayingState extends PlayState {
 
 class ErrorState extends PlayState {
   final String msg;
+
   const ErrorState(this.msg);
+
   @override
   List<Object> get props => [msg];
 }
@@ -47,4 +49,29 @@ class ErrorState extends PlayState {
 class PlayPauseState extends PlayState {
   @override
   List<Object> get props => [];
+}
+
+class ConfigState extends PlayState {
+  final double volume, speed;
+  final Duration position, duration;
+  final bool isPlaying;
+
+  const ConfigState({
+    required this.volume,
+    required this.speed,
+    required this.position,
+    required this.duration,
+    required this.isPlaying,
+  });
+
+  ConfigState copyWith(
+      {double? volume, double? speed, Duration? position, Duration? duration, bool? isPlaying}) {
+    return ConfigState(
+        volume: volume ?? this.volume,
+        speed: speed ?? this.speed,
+        position: position ?? this.position,
+        duration: duration ?? this.duration,
+        isPlaying: isPlaying ?? this.isPlaying
+    );
+  }
 }

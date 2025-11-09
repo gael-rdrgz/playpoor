@@ -9,6 +9,7 @@ import 'package:playerbloc/views/progress_slider.dart';
 import 'package:playerbloc/views/swiper.dart';
 
 import '../models/audio_item.dart';
+import 'conf_modal.dart';
 
 class Player extends StatefulWidget {
   final AudioPlayer audioPlayer;
@@ -81,7 +82,6 @@ class _PlayerState extends State<Player> {
       value: bloc,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xfff2e4e9),
           title: Text(
             "PlayPoor",
             style: TextStyle(
@@ -97,12 +97,7 @@ class _PlayerState extends State<Player> {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return Container(
-                      height: 200,
-                      child: Center(
-                        child: Text('Contenido del Bottom Sheet'),
-                      ),
-                    );
+                    return ConfModal();
                   },
                 );
               },

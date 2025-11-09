@@ -27,3 +27,26 @@ class SeekEvent extends PlayerEvent {
   @override
   List<Object> get props => [position];
 }
+
+class VolumeChangedEvent extends PlayerEvent {
+  final double volume;
+
+  const VolumeChangedEvent(this.volume);
+}
+
+class SpeedChangedEvent extends PlayerEvent {
+  final double speed;
+
+  const SpeedChangedEvent(this.speed);
+}
+
+class UpdateSongInfoEvent extends PlayerEvent {
+  final Duration position, duration;
+  final bool isPlaying;
+
+  const UpdateSongInfoEvent({
+    required this.position,
+    required this.duration,
+    required this.isPlaying,
+  });
+}

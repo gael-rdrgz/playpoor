@@ -12,7 +12,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xfff8f6f7),
-        appBarTheme: AppBarTheme(backgroundColor: const Color(0xfff8f6f7)),
+        appBarTheme: AppBarTheme(backgroundColor: const Color(0xfff2e4e9)),
       ),
       home: const Home(),
     );
