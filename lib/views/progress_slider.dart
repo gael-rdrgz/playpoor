@@ -8,7 +8,7 @@ import 'package:playerbloc/blocs/player_state.dart';
 class ProgressSlider extends StatelessWidget {
   final Color color;
 
-  const ProgressSlider({Key? key, required this.color}) : super(key: key);
+  const ProgressSlider({super.key, required this.color});
 
   @override
   Widget build(BuildContext context) {

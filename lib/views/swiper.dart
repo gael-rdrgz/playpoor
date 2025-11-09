@@ -50,7 +50,7 @@ class Swiper extends StatelessWidget {
             children: <Widget>[
               SizedBox(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * .3,
+                height: MediaQuery.of(context).size.height * 1/3,
                 child: PageView.builder(
                   controller: pageController,
                   itemCount: audioList.length,
@@ -65,7 +65,7 @@ class Swiper extends StatelessWidget {
                     duration: Duration(milliseconds: 300),
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(40),
                       child: Image.asset(
                         audioList[index].imagePath,
                         fit: BoxFit.cover,
@@ -83,13 +83,13 @@ class Swiper extends StatelessWidget {
                 axisDirection: Axis.horizontal,
                 effect: SlideEffect(
                   spacing: 8.0,
-                  radius: 4.0,
-                  dotWidth: 24.0,
+                  radius: 8.0,
+                  dotWidth: 16.0,
                   dotHeight: 16.0,
                   paintStyle: PaintingStyle.stroke,
-                  strokeWidth: 1.5,
-                  dotColor: Colors.grey,
-                  activeDotColor: color,
+                  strokeWidth: 2.0,
+                  dotColor: color,
+                  activeDotColor: Color(0xff800020),
                 ),
               ),
             ],

@@ -31,7 +31,6 @@ class _PlayerState extends State<Player> {
     ),
   ];
 
-  Color? wormColor;
   PageController? pageController;
 
   late final PlayerBloc bloc = PlayerBloc(
@@ -41,7 +40,6 @@ class _PlayerState extends State<Player> {
 
   @override
   void initState() {
-    wormColor = Color(0xffda1cd2);
     pageController = PageController(viewportFraction: .8);
     bloc.add(PlayerLoadEvent(0));
     super.initState();
@@ -59,12 +57,12 @@ class _PlayerState extends State<Player> {
               Swiper(
                 pageController: pageController!,
                 audioList: canciones,
-                color: wormColor!,
+                color: Color(0xffa23e48),
                 bloc: bloc,
               ),
               Artist(),
-              ProgressSlider(color: Colors.pink),
-              Botonera(color: Colors.pink),
+              ProgressSlider(color: Color(0xffc84b64)),
+              Botonera(color: Color(0xffc84b64)),
             ],
           ),
         ),

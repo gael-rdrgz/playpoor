@@ -11,8 +11,8 @@ class App extends StatelessWidget {
       title: "PlayPoor",
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xff0b16e6),
-        appBarTheme: AppBarTheme(backgroundColor: const Color(0xff0b16e6)),
+        scaffoldBackgroundColor: const Color(0xfff8f6f7),
+        appBarTheme: AppBarTheme(backgroundColor: const Color(0xfff8f6f7)),
       ),
       home: const Home(),
     );

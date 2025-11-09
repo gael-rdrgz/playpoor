@@ -42,14 +42,14 @@ class Botonera extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(timeFormat(position.inSeconds)),
+              Text(timeFormat(position.inSeconds), style: TextStyle(color: Color(0xff2b0d0d))),
               CircularPercentIndicator(
                 progressColor: color,
-                backgroundColor: Colors.blueGrey,
+                backgroundColor: Color(0xff2b0d0d),
                 circularStrokeCap: CircularStrokeCap.round,
                 arcType: ArcType.HALF,
-                radius: screenW * .25,
-                lineWidth: 3,
+                radius: screenW * .22,
+                lineWidth: 4,
                 percent: progress.clamp(0.0, 1.0),
                 center: FittedBox(
                   child: Row(
@@ -63,7 +63,7 @@ class Botonera extends StatelessWidget {
                         icon: Icon(Icons.skip_previous_rounded),
                       ),
                       IconButton(
-                        iconSize: screenW * porcentaje,
+                        iconSize: screenW * porcentaje * 1.75,
                         onPressed: () {
                           context.read<PlayerBloc>().add(PlayPauseEvent());
                         },
@@ -82,7 +82,7 @@ class Botonera extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(timeFormat(duration.inSeconds)),
+              Text(timeFormat(duration.inSeconds), style: TextStyle(color: Color(0xff2b0d0d))),
             ],
           ),
         );

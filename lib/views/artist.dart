@@ -25,7 +25,7 @@ class Artist extends StatelessWidget {
               Text(
                 name,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color(0xff2b0d0d),
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   fontFamily: "DMSerif",
@@ -37,7 +37,7 @@ class Artist extends StatelessWidget {
               Text(
                 artist,
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color(0xff6e3b3b),
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   fontFamily: "DMSerif",
