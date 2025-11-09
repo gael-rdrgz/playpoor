@@ -29,6 +29,18 @@ class _PlayerState extends State<Player> {
       "Abram",
       "assets/thejazzpiano_colored.jpg",
     ),
+    AudioItem(
+      "hollow_knight.mp3",
+      "Hollow Knight",
+      "Christopher Larkin",
+      "assets/hollow_knight.jpg",
+    ),
+    AudioItem(
+      "silksong.mp3",
+      "Silksong",
+      "Christopher Larkin",
+      "assets/silksong.jpg",
+    ),
   ];
 
   PageController? pageController;
@@ -50,7 +62,18 @@ class _PlayerState extends State<Player> {
     return BlocProvider.value(
       value: bloc,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text(
+            "PlayPoor",
+            style: TextStyle(
+              color: Color(0xff2b0d0d),
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              fontFamily: "DMSerif",
+            ),
+          ),
+
+        ),
         body: SafeArea(
           child: Column(
             children: <Widget>[

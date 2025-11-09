@@ -157,10 +157,14 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     final estadoActual = state as PlayingState;
     int index = estadoActual.currentIndex;
 
-    if (index > 0) {
-      index = index - 1;
-    } else {
-      index = canciones.length - 1;
+    if (estadoActual.position < Duration(seconds: 1)){
+      if (index > 0) {
+        index = index - 1;
+      } else {
+        index = canciones.length - 1;
+      }
+    }else{
+      add(PlayerLoadEvent(index)); //regresar cancion al inicio si la posicion no es menor a 1
     }
 
     add(PlayerLoadEvent(index));

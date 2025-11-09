@@ -42,7 +42,14 @@ class Botonera extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(timeFormat(position.inSeconds), style: TextStyle(color: Color(0xff2b0d0d))),
+              Text(
+                timeFormat(position.inSeconds),
+                style: TextStyle(
+                  color: Color(0xff2b0d0d),
+                  fontFamily: "DMSerif",
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               CircularPercentIndicator(
                 progressColor: color,
                 backgroundColor: Color(0xff2b0d0d),
@@ -82,7 +89,14 @@ class Botonera extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(timeFormat(duration.inSeconds), style: TextStyle(color: Color(0xff2b0d0d))),
+              Text(
+                timeFormat(duration.inSeconds),
+                style: TextStyle(
+                  color: Color(0xff2b0d0d),
+                  fontFamily: "DMSerif",
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
         );
