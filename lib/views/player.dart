@@ -41,6 +41,19 @@ class _PlayerState extends State<Player> {
       "Christopher Larkin",
       "assets/silksong.jpg",
     ),
+    AudioItem(
+      "main_theme.mp3",
+      "Main Theme",
+      "Gareth Coker",
+      "assets/orimain.jpg",
+    ),
+    AudioItem(
+      "elden_ring.mp3",
+      "Elden Ring",
+      "Tsukasa Saitoh",
+      "assets/eldenring.png",
+    ),
+    AudioItem("fuentes_de_gael.mp3", "Fuentes De Ortiz", "Ed Maverick", "assets/ortiz.jpg")
   ];
 
   PageController? pageController;
@@ -72,9 +85,13 @@ class _PlayerState extends State<Player> {
               fontFamily: "DMSerif",
             ),
           ),
-            actions: <Widget>[
-              IconButton(onPressed: (){}, icon: Icon(Icons.settings), iconSize: 24,)
-            ],
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.settings),
+              iconSize: 24,
+            ),
+          ],
         ),
         body: SafeArea(
           child: Column(
