@@ -53,7 +53,12 @@ class _PlayerState extends State<Player> {
       "Tsukasa Saitoh",
       "assets/eldenring.png",
     ),
-    AudioItem("fuentes_de_gael.mp3", "Fuentes De Ortiz", "Ed Maverick", "assets/ortiz.jpg")
+    AudioItem(
+      "fuentes_de_gael.mp3",
+      "Fuentes De Ortiz",
+      "Ed Maverick",
+      "assets/ortiz.jpg",
+    ),
   ];
 
   PageController? pageController;

@@ -11,7 +11,7 @@ import 'package:playerbloc/models/audio_item.dart';
 class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
   final AudioPlayer audioPlayer;
   final List<AudioItem> canciones;
-  StreamSubscription? posicion, duracion, estado;
+  StreamSubscription? posicion, duracion, estado,completo;
 
   PlayerBloc({required this.audioPlayer, required this.canciones})
     : super(InitialState()) {
@@ -40,6 +40,12 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
       }
     });
 
+    audioPlayer.onPlayerComplete.listen((event) {
+      if (state is PlayState) {
+        add(NextEvent());
+      }
+    },);
+
     estado = audioPlayer.onPlayerStateChanged.listen((event) {
       if (state is! PlayingState) return;
       final PlayingState estadoActual = state as PlayingState;
@@ -59,9 +65,9 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
         }
       }
 
-      if (estadoActual.duration == estadoActual.position){
+      /*if (estadoActual.duration == estadoActual.position){
         add(NextEvent());
-      }
+      }*/
     });
   }
 
@@ -70,6 +76,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     Emitter<PlayState> emit,
   ) async {
     try {
+      debugPrint('>>> CARGANDO canción en índice: ${event.index}');
+      debugPrint('>>> Archivo: ${canciones[event.index].assetPath}');
       emit(LoadingState()); //mandar estado a la ui
       await audioPlayer?.stop();
       await audioPlayer?.setSourceAsset(canciones[event.index].assetPath);
@@ -145,6 +153,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     estado?.cancel();
     posicion?.cancel();
     duracion?.cancel();
+    completo?.cancel();
     audioPlayer.dispose();
 
     return super.close();
@@ -177,12 +186,17 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     final estadoActual = state as PlayingState;
     int index = estadoActual.currentIndex;
 
-    if (index < canciones.length) {
-      index = index + 1;
+    debugPrint('=== NEXT EVENT ===');
+    debugPrint('Índice actual: $index');
+    debugPrint('Total de canciones: ${canciones.length}');
+
+    index = index+1;
+    if (index >= canciones.length) {
+      index  = 0;
+
     }
-    if (index == canciones.length) {
-      index = 0;
-    }
+    debugPrint('Nuevo índice: $index');
+    debugPrint('==================');
 
     add(PlayerLoadEvent(index));
   }
