@@ -19,6 +19,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     on<PlayEvent>(reproduciendo);
     on<PauseEvent>(pausando);
     on<PlayPauseEvent>(alternando);
+    on<PrevEvent>(cambiandoAnterior);
+    on<NextEvent>(cambiandoSiguiente);
     setup();
   }
 
@@ -30,7 +32,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
       }
     });
 
-    duracion = audioPlayer.onDurationChanged.listen((dur) {
+    duracion = audioPlayer.onDurationChanged.listen((dur) async {
       if (state is PlayingState) {
         final PlayingState estadoActual = state as PlayingState;
         emit(estadoActual.copyWith(duration: dur));
@@ -41,39 +43,20 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
       if (state is! PlayingState) return;
       final PlayingState estadoActual = state as PlayingState;
 
-      switch(event){
-        case PlayerState.playing:
-          if (!estadoActual.isPlaying) {
-            emit(estadoActual.copyWith(isPlaying: true));
-          }
-          break;
-        case PlayerState.paused:
-        case PlayerState.stopped:
-          if (estadoActual.isPlaying) {
-            emit(estadoActual.copyWith(isPlaying: false));
-          }
-          break;
-        case PlayerState.completed:
-          add(NextEvent());
-          break;
-        case PlayerState.disposed:
-          break;
-      }
-      /*if (state == PlayerState.playing) {
-        //player state de dart
+      if (event == PlayerState.playing) {
         if (event is PlayingState) {
           if (!estadoActual.isPlaying) {
             add(PlayEvent());
           }
         }
       }
-      if (state == PlayerState.paused) {
+      if (event == PlayerState.paused) {
         if (event is PlayingState) {
           if (estadoActual.isPlaying) {
             add(PlayPauseEvent());
           }
         }
-      }*/
+      }
     });
   }
 
@@ -85,10 +68,13 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
       emit(LoadingState()); //mandar estado a la ui
       await audioPlayer?.stop();
       await audioPlayer?.setSourceAsset(canciones[event.index].assetPath);
+
+      final duration = await audioPlayer.getDuration();
+
       emit(
         PlayingState(
           currentIndex: event.index,
-          duration: Duration.zero,
+          duration: duration ?? Duration.zero,
           position: Duration.zero,
           isPlaying: true,
         ),
@@ -157,5 +143,38 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     audioPlayer.dispose();
 
     return super.close();
+  }
+
+  FutureOr<void> cambiandoAnterior(
+    PrevEvent event,
+    Emitter<PlayState> emit,
+  ) async {
+    final estadoActual = state as PlayingState;
+    int index = estadoActual.currentIndex;
+
+    if (index > 0) {
+      index = index - 1;
+    } else {
+      index = canciones.length - 1;
+    }
+
+    add(PlayerLoadEvent(index));
+  }
+
+  FutureOr<void> cambiandoSiguiente(
+    NextEvent event,
+    Emitter<PlayState> emit,
+  ) async {
+    final estadoActual = state as PlayingState;
+    int index = estadoActual.currentIndex;
+
+    if (index < canciones.length) {
+      index = index + 1;
+    }
+    if (index == canciones.length) {
+      index = 0;
+    }
+
+    add(PlayerLoadEvent(index));
   }
 }

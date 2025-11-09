@@ -7,13 +7,9 @@ import 'package:playerbloc/blocs/player_load_states.dart';
 import 'package:playerbloc/blocs/player_state.dart';
 
 class Botonera extends StatelessWidget {
-
   final Color color;
 
-  const Botonera({
-    required this.color,
-    super.key
-  });
+  const Botonera({required this.color, super.key});
 
   String timeFormat(int seconds) {
     final int min = (seconds / 60).floor();
@@ -29,10 +25,16 @@ class Botonera extends StatelessWidget {
 
     return BlocBuilder<PlayerBloc, PlayState>(
       builder: (context, state) {
-        final Duration position = state is PlayingState ? state.position : Duration.zero;
-        final Duration duration = state is PlayingState ? state.duration : Duration.zero;
+        final Duration position = state is PlayingState
+            ? state.position
+            : Duration.zero;
+        final Duration duration = state is PlayingState
+            ? state.duration
+            : Duration.zero;
         final bool isPlaying = state is PlayingState && state.isPlaying;
-        double progress = duration.inSeconds > 0 ? position.inSeconds / duration.inSeconds : 0.0;
+        double progress = duration.inSeconds > 0
+            ? position.inSeconds / duration.inSeconds
+            : 0.0;
 
         return SizedBox(
           width: screenW * .75,
@@ -55,10 +57,10 @@ class Botonera extends StatelessWidget {
                     children: <Widget>[
                       IconButton(
                         iconSize: screenW * porcentaje,
-                        onPressed: (){
-
+                        onPressed: () {
+                          context.read<PlayerBloc>().add(PrevEvent());
                         },
-                        icon: Icon(Icons.skip_previous_rounded)
+                        icon: Icon(Icons.skip_previous_rounded),
                       ),
                       IconButton(
                         iconSize: screenW * porcentaje,
@@ -68,15 +70,14 @@ class Botonera extends StatelessWidget {
                         icon: Icon(
                           isPlaying ? Icons.pause : Icons.play_arrow_rounded,
                         ),
-
                       ),
                       IconButton(
-                          iconSize: screenW * porcentaje,
-                          onPressed: (){
-
-                          },
-                          icon: Icon(Icons.skip_next_rounded)
-                      )
+                        iconSize: screenW * porcentaje,
+                        onPressed: () {
+                          context.read<PlayerBloc>().add(NextEvent());
+                        },
+                        icon: Icon(Icons.skip_next_rounded),
+                      ),
                     ],
                   ),
                 ),
