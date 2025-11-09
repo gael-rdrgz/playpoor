@@ -11,7 +11,8 @@ import 'package:playerbloc/models/audio_item.dart';
 class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
   final AudioPlayer audioPlayer;
   final List<AudioItem> canciones;
-  StreamSubscription? posicion, duracion, estado,completo;
+  StreamSubscription? posicion, duracion, estado, completo;
+  bool _canAutoAdvance = true;
 
   PlayerBloc({required this.audioPlayer, required this.canciones})
     : super(InitialState()) {
@@ -40,17 +41,19 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
       }
     });
 
-    audioPlayer.onPlayerComplete.listen((event) {
-      if (state is PlayState) {
+    completo = audioPlayer.onPlayerComplete.listen((event) {
+      if (state is PlayingState && _canAutoAdvance) {
+        debugPrint("Autoavance activado");
         add(NextEvent());
       }
-    },);
+    });
 
     estado = audioPlayer.onPlayerStateChanged.listen((event) {
       if (state is! PlayingState) return;
       final PlayingState estadoActual = state as PlayingState;
 
       if (event == PlayerState.playing) {
+        _canAutoAdvance = true;
         if (event is PlayingState) {
           if (!estadoActual.isPlaying) {
             add(PlayEvent());
@@ -78,6 +81,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     try {
       debugPrint('>>> CARGANDO canción en índice: ${event.index}');
       debugPrint('>>> Archivo: ${canciones[event.index].assetPath}');
+      completo?.pause();
+      _canAutoAdvance = false;
       emit(LoadingState()); //mandar estado a la ui
       await audioPlayer?.stop();
       await audioPlayer?.setSourceAsset(canciones[event.index].assetPath);
@@ -92,6 +97,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
           isPlaying: true,
         ),
       );
+      completo?.resume();
       add(PlayEvent());
     } catch (e) {
       emit(
@@ -165,15 +171,19 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
   ) async {
     final estadoActual = state as PlayingState;
     int index = estadoActual.currentIndex;
+    _canAutoAdvance = false;
 
-    if (estadoActual.position < Duration(seconds: 1)){
+    if (estadoActual.position < Duration(seconds: 1)) {
       if (index > 0) {
         index = index - 1;
       } else {
         index = canciones.length - 1;
       }
-    }else{
-      add(PlayerLoadEvent(index)); //regresar cancion al inicio si la posicion no es menor a 1
+    } else {
+      add(
+        PlayerLoadEvent(index),
+      ); //regresar cancion al inicio si la posicion no es menor a 1
+      return;
     }
 
     add(PlayerLoadEvent(index));
@@ -190,10 +200,11 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     debugPrint('Índice actual: $index');
     debugPrint('Total de canciones: ${canciones.length}');
 
-    index = index+1;
-    if (index >= canciones.length) {
-      index  = 0;
+    _canAutoAdvance = false;
 
+    index = index + 1;
+    if (index >= canciones.length) {
+      index = 0;
     }
     debugPrint('Nuevo índice: $index');
     debugPrint('==================');
@@ -201,7 +212,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     add(PlayerLoadEvent(index));
   }
 
-  FutureOr<void> cambiandoPosicion(SeekEvent event, Emitter<PlayState> emit) async {
+  FutureOr<void> cambiandoPosicion(
+    SeekEvent event,
+    Emitter<PlayState> emit,
+  ) async {
     await audioPlayer.seek(event.position);
   }
 }
