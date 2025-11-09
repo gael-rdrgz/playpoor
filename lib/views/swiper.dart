@@ -48,6 +48,7 @@ class Swiper extends StatelessWidget {
         builder: (context, state) {
           return Column(
             children: <Widget>[
+              SizedBox(height: 16.0,),
               SizedBox(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 1/3,
@@ -76,7 +77,7 @@ class Swiper extends StatelessWidget {
               ),
               //Divider(),
               //Spacer()
-              SizedBox(height: 15),
+              SizedBox(height: 16),
               SmoothPageIndicator(
                 controller: pageController,
                 count: audioList.length,
