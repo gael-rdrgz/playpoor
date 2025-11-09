@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:playerbloc/blocs/player_bloc.dart';
 import 'package:playerbloc/blocs/player_load_events.dart';
+import 'package:playerbloc/views/artist.dart';
 import 'package:playerbloc/views/botonera.dart';
+import 'package:playerbloc/views/progress_slider.dart';
 import 'package:playerbloc/views/swiper.dart';
 
 import '../models/audio_item.dart';
@@ -60,7 +62,9 @@ class _PlayerState extends State<Player> {
                 color: wormColor!,
                 bloc: bloc,
               ),
-              Botonera(color: Colors.pink)
+              Artist(),
+              ProgressSlider(color: Colors.pink),
+              Botonera(color: Colors.pink),
             ],
           ),
         ),

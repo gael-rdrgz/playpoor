@@ -1,4 +1,4 @@
-import 'dart:nativewrappers/_internal/vm/lib/mirrors_patch.dart';
+//import 'dart:nativewrappers/_internal/vm/lib/mirrors_patch.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +33,7 @@ class Swiper extends StatelessWidget {
           (prev is! PlayingState || curr.currentIndex != (prev).currentIndex),
       listener: (context, state) {
         if (state is PlayingState) {
-          if (pageController.offset == 0 || state.currentIndex == bloc.canciones.length - 1) {
+          if (pageController.offset == 0) {
             pageController.jumpToPage(state.currentIndex);
           } else {
             pageController.animateToPage(

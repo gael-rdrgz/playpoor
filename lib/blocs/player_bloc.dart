@@ -21,6 +21,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     on<PlayPauseEvent>(alternando);
     on<PrevEvent>(cambiandoAnterior);
     on<NextEvent>(cambiandoSiguiente);
+    on<SeekEvent>(cambiandoPosicion);
     setup();
   }
 
@@ -82,7 +83,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
       add(PlayEvent());
     } catch (e) {
       emit(
-        ErrorState("Error: De alguna manera, en algún lugar, algo salió mal."),
+        ErrorState("Error: Todo lo que ha podido fallar lo ha hecho."),
       ); //emit para estados, add para eventos
       debugPrint(e.toString());
     }
@@ -176,5 +177,9 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     }
 
     add(PlayerLoadEvent(index));
+  }
+
+  FutureOr<void> cambiandoPosicion(SeekEvent event, Emitter<PlayState> emit) async {
+    await audioPlayer.seek(event.position);
   }
 }
