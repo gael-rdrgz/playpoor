@@ -215,7 +215,7 @@ class ConfModal extends StatelessWidget {
                   left: 20,
                   right: 20,
                 ),
-                width: MediaQuery.of(context).size.width * .85,
+                width: MediaQuery.of(context).size.width * .90,
                 decoration: BoxDecoration(
                   color: Color(0xfff8f6f7),
                   borderRadius: BorderRadius.circular(20),
@@ -227,13 +227,13 @@ class ConfModal extends StatelessWidget {
                       "Información del audio",
                       style: TextStyle(
                         fontFamily: "DMSerif",
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff2b0d0d),
                       ),
                     ),
                     Row(
-                      spacing: 16,
+                      spacing: 26,
                       children: [
                         Column(
                           children: [
@@ -241,7 +241,7 @@ class ConfModal extends StatelessWidget {
                               "Estado",
                               style: TextStyle(
                                 fontFamily: "DMSerif",
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Color(0xff6e3b3b),
                               ),
                             ),
@@ -249,7 +249,7 @@ class ConfModal extends StatelessWidget {
                               currentState ? "Reproduciendo" : "En pausa",
                               style: TextStyle(
                                 fontFamily: "DMSerif",
-                                fontSize: 18,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff2b0d0d),
                               ),
@@ -262,7 +262,7 @@ class ConfModal extends StatelessWidget {
                               "Duración",
                               style: TextStyle(
                                 fontFamily: "DMSerif",
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Color(0xff6e3b3b),
                               ),
                             ),
@@ -270,7 +270,7 @@ class ConfModal extends StatelessWidget {
                               timeFormat(currentDuration.inSeconds),
                               style: TextStyle(
                                 fontFamily: "DMSerif",
-                                fontSize: 18,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff2b0d0d),
                               ),
@@ -283,7 +283,7 @@ class ConfModal extends StatelessWidget {
                               "Posición",
                               style: TextStyle(
                                 fontFamily: "DMSerif",
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Color(0xff6e3b3b),
                               ),
                             ),
@@ -291,7 +291,7 @@ class ConfModal extends StatelessWidget {
                               timeFormat(currentPosition.inSeconds),
                               style: TextStyle(
                                 fontFamily: "DMSerif",
-                                fontSize: 18,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff2b0d0d),
                               ),
