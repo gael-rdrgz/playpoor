@@ -21,7 +21,7 @@ class Botonera extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenW = MediaQuery.of(context).size.width;
     final screenH = MediaQuery.of(context).size.height;
-    final double porcentaje = .08;
+    final double porcentaje = .10;
 
     return BlocBuilder<PlayerBloc, PlayState>(
       builder: (context, state) {
@@ -39,63 +39,88 @@ class Botonera extends StatelessWidget {
         return SizedBox(
           width: screenW * .75,
           height: screenH * .3,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                timeFormat(position.inSeconds),
-                style: TextStyle(
-                  color: Color(0xff2b0d0d),
-                  fontFamily: "DMSerif",
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              CircularPercentIndicator(
-                progressColor: color,
-                backgroundColor: Color(0xff2b0d0d),
-                circularStrokeCap: CircularStrokeCap.round,
-                arcType: ArcType.HALF,
-                radius: screenW * .22,
-                lineWidth: 4,
-                percent: progress.clamp(0.0, 1.0),
-                center: FittedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                        iconSize: screenW * porcentaje,
-                        onPressed: () {
-                          context.read<PlayerBloc>().add(PrevEvent());
-                        },
-                        icon: Icon(Icons.skip_previous_rounded),
-                      ),
-                      IconButton(
-                        iconSize: screenW * porcentaje * 1.75,
-                        onPressed: () {
-                          context.read<PlayerBloc>().add(PlayPauseEvent());
-                        },
-                        icon: Icon(
-                          isPlaying ? Icons.pause : Icons.play_arrow_rounded,
-                        ),
-                      ),
-                      IconButton(
-                        iconSize: screenW * porcentaje,
-                        onPressed: () {
-                          context.read<PlayerBloc>().add(NextEvent());
-                        },
-                        icon: Icon(Icons.skip_next_rounded),
-                      ),
-                    ],
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    timeFormat(position.inSeconds),
+                    style: TextStyle(
+                      color: Color(0xff2b0d0d),
+                      fontFamily: "DMSerif",
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-              ),
-              Text(
-                timeFormat(duration.inSeconds),
-                style: TextStyle(
-                  color: Color(0xff2b0d0d),
-                  fontFamily: "DMSerif",
-                  fontWeight: FontWeight.w600,
-                ),
+                  CircularPercentIndicator(
+                    progressColor: color,
+                    backgroundColor: Color(0xff2b0d0d),
+                    circularStrokeCap: CircularStrokeCap.round,
+                    arcType: ArcType.HALF,
+                    radius: screenW * .22,
+                    lineWidth: 4,
+                    percent: progress.clamp(0.0, 1.0),
+                    center: SizedBox(
+                      width: screenW * .44,
+
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          IconButton(
+                            iconSize: screenW * .10,
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                            onPressed: () {
+                              final bloc = context.read<PlayerBloc>();
+                              if (bloc.state is! LoadingState) {
+                                bloc.add(PrevEvent());
+                              }
+                            },
+                            icon: Icon(Icons.skip_previous_rounded),
+                          ),
+                          IconButton(
+                            iconSize: screenW * porcentaje * 1.6,
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                            onPressed: () {
+                              final bloc = context.read<PlayerBloc>();
+                              if (bloc.state is! LoadingState) {
+                                // verificacion
+                                bloc.add(PlayPauseEvent());
+                              }
+                            },
+                            icon: Icon(
+                              isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow_rounded,
+                            ),
+                          ),
+                          IconButton(
+                            iconSize: screenW * .10,
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                            onPressed: () {
+                              final bloc = context.read<PlayerBloc>();
+                              if (bloc.state is! LoadingState) {
+                                bloc.add(NextEvent());
+                              }
+                            },
+                            icon: Icon(Icons.skip_next_rounded),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Text(
+                    timeFormat(duration.inSeconds),
+                    style: TextStyle(
+                      color: Color(0xff2b0d0d),
+                      fontFamily: "DMSerif",
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
