@@ -125,18 +125,20 @@ class PlayerState extends State<Player> {
                 ),
               ),
             ),
-            child: Column(
-              children: <Widget>[
-                Swiper(
-                  pageController: pageController!,
-                  audioList: canciones,
-                  color: Color(0xffa23e48),
-                  bloc: bloc,
-                ),
-                Artist(),
-                ProgressSlider(color: Color(0xffc84b64)),
-                Botonera(color: Color(0xffc84b64)),
-              ],
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Swiper(
+                    pageController: pageController!,
+                    audioList: canciones,
+                    color: Color(0xffa23e48),
+                    bloc: bloc,
+                  ),
+                  Artist(),
+                  ProgressSlider(color: Color(0xffc84b64)),
+                  Botonera(color: Color(0xffc84b64)),
+                ],
+              ),
             ),
           ),
         ),

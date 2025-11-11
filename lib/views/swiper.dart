@@ -57,7 +57,7 @@ class _SwiperState extends State<Swiper> {
         builder: (context, state) {
           return Column(
             children: <Widget>[
-              SizedBox(height: 16.0),
+              SizedBox(height: 4),
               SizedBox(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 1 / 3,
