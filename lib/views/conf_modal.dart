@@ -17,6 +17,7 @@ class ConfModal extends StatelessWidget {
       bloc: bloc,
       builder: (context, state) {
         final currentVolume = state is PlayingState ? state.volume : 1.0;
+        final currentSpeed = state is PlayingState ? state.playSpeed : 1.0;
 
         return Container(
           height: MediaQuery.of(context).size.height * 1 / 2,
@@ -44,7 +45,7 @@ class ConfModal extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       if (currentVolume > 0){
-                        final volumenNuevo = (currentVolume - 0.05).clamp(0.0, 1.0);
+                        final volumenNuevo = (currentVolume - 0.05 ).clamp(0.0, 1.0);
                         bloc?.add(VolumeChangedEvent(volumenNuevo));
                       }
                     },
@@ -84,33 +85,45 @@ class ConfModal extends StatelessWidget {
                 children: [
                   ChoiceChip(
                     label: Text("0.5x"),
-                    selected: false,
-                    onSelected: (selected) {},
+                    selected: currentSpeed == 0.5,
+                    onSelected: (selected) {
+                      bloc?.add(SpeedChangedEvent(0.5));
+                    },
                   ),
                   ChoiceChip(
                     label: Text("0.75x"),
-                    selected: false,
-                    onSelected: (selected) {},
+                    selected: currentSpeed == 0.75,
+                    onSelected: (selected) {
+                      bloc?.add(SpeedChangedEvent(0.75));
+                    },
                   ),
                   ChoiceChip(
                     label: Text("1.0x"),
-                    selected: false,
-                    onSelected: (selected) {},
+                    selected: currentSpeed == 1,
+                    onSelected: (selected) {
+                      bloc?.add(SpeedChangedEvent(1));
+                    },
                   ),
                   ChoiceChip(
                     label: Text("1.25x"),
-                    selected: false,
-                    onSelected: (selected) {},
+                    selected: currentSpeed == 1.25,
+                    onSelected: (selected) {
+                      bloc?.add(SpeedChangedEvent(1.25));
+                    },
                   ),
                   ChoiceChip(
                     label: Text("1.5x"),
-                    selected: false,
-                    onSelected: (selected) {},
+                    selected: currentSpeed == 1.5,
+                    onSelected: (selected) {
+                      bloc?.add(SpeedChangedEvent(1.5));
+                    },
                   ),
                   ChoiceChip(
                     label: Text("2.0x"),
-                    selected: false,
-                    onSelected: (selected) {},
+                    selected: currentSpeed == 2,
+                    onSelected: (selected) {
+                      bloc?.add(SpeedChangedEvent(2));
+                    },
                   ),
                 ],
               ),
