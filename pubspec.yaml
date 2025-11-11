@@ -38,6 +38,7 @@ dependencies:
   audioplayers: ^6.5.1
   smooth_page_indicator: ^1.2.1
   percent_indicator: ^4.2.5
+  flutter_slider_drawer: ^3.0.2
 
   #dependencias para bloc
   bloc: ^9.1.0
