@@ -118,94 +118,96 @@ class ConfModal extends StatelessWidget {
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * .85,
-                child: Wrap(
-                  spacing: 8,
-                  children: [
-                    ChoiceChip(
-                      label: Text(
-                        "0.5x",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff2b0d0d),
+                child: Center(
+                  child: Wrap(
+                    spacing: 8,
+                    children: [
+                      ChoiceChip(
+                        label: Text(
+                          "0.5x",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff2b0d0d),
+                          ),
                         ),
+                        selected: currentSpeed == 0.5,
+                        selectedColor: Color(0xfff2d6d6),
+                        onSelected: (selected) {
+                          bloc?.add(SpeedChangedEvent(0.5));
+                        },
                       ),
-                      selected: currentSpeed == 0.5,
-                      selectedColor: Color(0xfff2d6d6),
-                      onSelected: (selected) {
-                        bloc?.add(SpeedChangedEvent(0.5));
-                      },
-                    ),
-                    ChoiceChip(
-                      label: Text(
-                        "0.75x",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff2b0d0d),
+                      ChoiceChip(
+                        label: Text(
+                          "0.75x",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff2b0d0d),
+                          ),
                         ),
+                        selected: currentSpeed == 0.75,
+                        selectedColor: Color(0xfff2d6d6),
+                        onSelected: (selected) {
+                          bloc?.add(SpeedChangedEvent(0.75));
+                        },
                       ),
-                      selected: currentSpeed == 0.75,
-                      selectedColor: Color(0xfff2d6d6),
-                      onSelected: (selected) {
-                        bloc?.add(SpeedChangedEvent(0.75));
-                      },
-                    ),
-                    ChoiceChip(
-                      label: Text(
-                        "1.0x",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff2b0d0d),
+                      ChoiceChip(
+                        label: Text(
+                          "1.0x",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff2b0d0d),
+                          ),
                         ),
+                        selected: currentSpeed == 1,
+                        selectedColor: Color(0xfff2d6d6),
+                        onSelected: (selected) {
+                          bloc?.add(SpeedChangedEvent(1));
+                        },
                       ),
-                      selected: currentSpeed == 1,
-                      selectedColor: Color(0xfff2d6d6),
-                      onSelected: (selected) {
-                        bloc?.add(SpeedChangedEvent(1));
-                      },
-                    ),
-                    ChoiceChip(
-                      label: Text(
-                        "1.25x",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff2b0d0d),
+                      ChoiceChip(
+                        label: Text(
+                          "1.25x",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff2b0d0d),
+                          ),
                         ),
+                        selected: currentSpeed == 1.25,
+                        selectedColor: Color(0xfff2d6d6),
+                        onSelected: (selected) {
+                          bloc?.add(SpeedChangedEvent(1.25));
+                        },
                       ),
-                      selected: currentSpeed == 1.25,
-                      selectedColor: Color(0xfff2d6d6),
-                      onSelected: (selected) {
-                        bloc?.add(SpeedChangedEvent(1.25));
-                      },
-                    ),
-                    ChoiceChip(
-                      label: Text(
-                        "1.5x",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff2b0d0d),
+                      ChoiceChip(
+                        label: Text(
+                          "1.5x",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff2b0d0d),
+                          ),
                         ),
+                        selected: currentSpeed == 1.5,
+                        selectedColor: Color(0xfff2d6d6),
+                        onSelected: (selected) {
+                          bloc?.add(SpeedChangedEvent(1.5));
+                        },
                       ),
-                      selected: currentSpeed == 1.5,
-                      selectedColor: Color(0xfff2d6d6),
-                      onSelected: (selected) {
-                        bloc?.add(SpeedChangedEvent(1.5));
-                      },
-                    ),
-                    ChoiceChip(
-                      label: Text(
-                        "2.0x",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff2b0d0d),
+                      ChoiceChip(
+                        label: Text(
+                          "2.0x",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff2b0d0d),
+                          ),
                         ),
+                        selected: currentSpeed == 2,
+                        selectedColor: Color(0xfff2d6d6),
+                        onSelected: (selected) {
+                          bloc?.add(SpeedChangedEvent(2));
+                        },
                       ),
-                      selected: currentSpeed == 2,
-                      selectedColor: Color(0xfff2d6d6),
-                      onSelected: (selected) {
-                        bloc?.add(SpeedChangedEvent(2));
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Container(
@@ -215,7 +217,7 @@ class ConfModal extends StatelessWidget {
                   left: 20,
                   right: 20,
                 ),
-                width: MediaQuery.of(context).size.width * .90,
+                width: MediaQuery.of(context).size.width * .8,
                 decoration: BoxDecoration(
                   color: Color(0xfff8f6f7),
                   borderRadius: BorderRadius.circular(20),
@@ -233,6 +235,8 @@ class ConfModal extends StatelessWidget {
                       ),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       spacing: 26,
                       children: [
                         Column(
