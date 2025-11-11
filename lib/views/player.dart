@@ -1,10 +1,13 @@
 import 'package:audioplayers/src/audioplayer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:playerbloc/blocs/player_bloc.dart';
 import 'package:playerbloc/blocs/player_load_events.dart';
 import 'package:playerbloc/views/artist.dart';
 import 'package:playerbloc/views/botonera.dart';
+import 'package:playerbloc/views/left_pane_drawer.dart';
 import 'package:playerbloc/views/progress_slider.dart';
 import 'package:playerbloc/views/swiper.dart';
 
@@ -62,6 +65,9 @@ class _PlayerState extends State<Player> {
     ),
   ];
 
+  final GlobalKey<SliderDrawerState> _drawerKey =
+      GlobalKey<SliderDrawerState>();
+
   PageController? pageController;
 
   late final PlayerBloc bloc = PlayerBloc(
@@ -78,47 +84,60 @@ class _PlayerState extends State<Player> {
 
   @override
   Widget build(BuildContext context) {
+    //para la barra de estado del sistema adecuada
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
     return BlocProvider.value(
       value: bloc,
+
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "PlayPoor",
-            style: TextStyle(
-              color: Color(0xff2b0d0d),
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              fontFamily: "DMSerif",
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ConfModal(bloc: bloc,);
-                  },
-                );
-              },
-              icon: Icon(Icons.settings),
-              iconSize: 24,
-            ),
-          ],
-        ),
         body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Swiper(
-                pageController: pageController!,
-                audioList: canciones,
-                color: Color(0xffa23e48),
-                bloc: bloc,
+          top: true,
+          child: SliderDrawer(
+            key: _drawerKey,
+            slider: LeftPaneDrawer(bloc: bloc),
+            appBar: SliderAppBar(
+              config: SliderAppBarConfig(
+                title: Text(
+                  "PlayPoor",
+                  style: TextStyle(
+                    color: Color(0xff2b0d0d),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "DMSerif",
+                  ),
+                ),
+                trailing: IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ConfModal(bloc: bloc);
+                      },
+                    );
+                  },
+                  icon: Icon(Icons.settings),
+                  iconSize: 24,
+                ),
               ),
-              Artist(),
-              ProgressSlider(color: Color(0xffc84b64)),
-              Botonera(color: Color(0xffc84b64)),
-            ],
+            ),
+            child: Column(
+              children: <Widget>[
+                Swiper(
+                  pageController: pageController!,
+                  audioList: canciones,
+                  color: Color(0xffa23e48),
+                  bloc: bloc,
+                ),
+                Artist(),
+                ProgressSlider(color: Color(0xffc84b64)),
+                Botonera(color: Color(0xffc84b64)),
+              ],
+            ),
           ),
         ),
       ),
