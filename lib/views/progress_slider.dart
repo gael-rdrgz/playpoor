@@ -32,7 +32,7 @@ class ProgressSlider extends StatelessWidget {
               overlayColor: Colors.transparent,
             ),
             child: Slider(
-              value: position.inSeconds.toDouble(),
+              value: position.inSeconds.clamp(0, duration.inSeconds).toDouble(),
               max: duration.inSeconds.toDouble(),
               min: 0,
               onChanged: (value) {
