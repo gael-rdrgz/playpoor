@@ -42,7 +42,12 @@ class ConfModal extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (currentVolume > 0){
+                        final volumenNuevo = (currentVolume - 0.05).clamp(0.0, 1.0);
+                        bloc?.add(VolumeChangedEvent(volumenNuevo));
+                      }
+                    },
                     icon: Icon(Icons.volume_down_rounded),
                   ),
                   Slider(
@@ -51,19 +56,21 @@ class ConfModal extends StatelessWidget {
                     max: 1.0,
                     divisions: 100,
                     onChanged: (value) {
-                      debugPrint('=== SLIDER CAMBIÓ ===');
-                      debugPrint('Nuevo valor: $value');
-                      debugPrint('Estado actual: $state');
                       bloc?.add(VolumeChangedEvent(value));
                     },
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (currentVolume < 1){
+                        final volumenNuevo = (currentVolume + 0.05).clamp(0.0, 1.0);
+                        bloc?.add(VolumeChangedEvent(volumenNuevo));
+                      }
+                    },
                     icon: Icon(Icons.volume_up_rounded),
                   ),
                 ],
               ),
-              Text("Volumen: ${(currentVolume * 100).round()}% - Estado: ${state.runtimeType}"),
+              Text("Volumen: ${(currentVolume * 100).round()}%"),
               Text(
                 "Velocidad de reproducción",
                 style: TextStyle(
