@@ -97,7 +97,7 @@ class _PlayerState extends State<Player> {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return ConfModal();
+                    return ConfModal(bloc: bloc,);
                   },
                 );
               },

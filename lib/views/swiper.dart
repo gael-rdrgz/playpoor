@@ -10,7 +10,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../models/audio_item.dart';
 
-class Swiper extends StatelessWidget {
+class Swiper extends StatefulWidget {
+  // de staless a  statefulWidget
   final PageController pageController;
   final List<AudioItem> audioList;
   final Color color;
@@ -25,62 +26,76 @@ class Swiper extends StatelessWidget {
   });
 
   @override
+  State<Swiper> createState() => _SwiperState();
+}
+
+class _SwiperState extends State<Swiper> {
+  bool _isProgrammaticScroll = false; //  bandera para controlar el scroll de la animacion shittier
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<PlayerBloc, PlayState>(
-      bloc: bloc,
+      bloc: widget.bloc,
       listenWhen: (prev, curr) =>
-          curr is PlayingState &&
+      curr is PlayingState &&
           (prev is! PlayingState || curr.currentIndex != (prev).currentIndex),
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is PlayingState) {
-          if (pageController.offset == 0) {
-            pageController.jumpToPage(state.currentIndex);
-          } else {
-            pageController.animateToPage(
+          _isProgrammaticScroll = true;
+            await widget.pageController.animateToPage(
               state.currentIndex,
               duration: Duration(milliseconds: 500),
               curve: Curves.easeInOut,
             );
-          }
+
+          //esto para deesactivar bandera DESPUES de mover
+          await Future.delayed(Duration(milliseconds: 100));
+          _isProgrammaticScroll = false;
         }
       },
       child: BlocBuilder<PlayerBloc, PlayState>(
         builder: (context, state) {
           return Column(
             children: <Widget>[
-              SizedBox(height: 16.0,),
+              SizedBox(height: 16.0),
               SizedBox(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 1/3,
+                height: MediaQuery.of(context).size.height * 1 / 3,
                 child: PageView.builder(
-                  controller: pageController,
-                  itemCount: audioList.length,
+                  controller: widget.pageController,
+                  itemCount: widget.audioList.length,
                   onPageChanged: (indice) {
-                    final actual = bloc.state;
+                    if (_isProgrammaticScroll) {
+                      debugPrint(
+                        '⚠ Ignorando onPageChanged - Scroll programático',
+                      );
+                      return;
+                    }
+
+                    final actual = widget.bloc.state;
                     if (actual is PlayingState &&
                         indice != actual.currentIndex) {
-                      bloc.add(PlayerLoadEvent(indice));
+                      debugPrint('👆 Usuario cambió de página a: $indice');
+                      widget.bloc.add(PlayerLoadEvent(indice));
                     }
                   },
-                  itemBuilder: (contex, index) => AnimatedContainer(
+                  itemBuilder: (context, index) => AnimatedContainer(
                     duration: Duration(milliseconds: 300),
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: Image.asset(
-                        audioList[index].imagePath,
+                        widget.audioList[index].imagePath,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 ),
               ),
-              //Divider(),
-              //Spacer()
               SizedBox(height: 16),
               SmoothPageIndicator(
-                controller: pageController,
-                count: audioList.length,
+                controller: widget.pageController,
+                count: widget.audioList.length,
                 axisDirection: Axis.horizontal,
                 effect: SlideEffect(
                   spacing: 8.0,
@@ -89,7 +104,7 @@ class Swiper extends StatelessWidget {
                   dotHeight: 16.0,
                   paintStyle: PaintingStyle.stroke,
                   strokeWidth: 2.0,
-                  dotColor: color,
+                  dotColor: widget.color,
                   activeDotColor: Color(0xff800020),
                 ),
               ),

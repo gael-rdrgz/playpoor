@@ -11,28 +11,32 @@ class PlayingState extends PlayState {
   final Duration duration;
   final Duration position;
   final bool isPlaying;
+  final double volume;
 
-  PlayingState({
+  const PlayingState({
     required this.currentIndex,
     required this.duration,
     required this.position,
     required this.isPlaying,
+    this.volume = 1.0
   });
 
   @override
-  List<Object> get props => [currentIndex, duration, position, isPlaying];
+  List<Object> get props => [currentIndex, duration, position, isPlaying, volume];
 
   PlayingState copyWith({
     int? currentIndex,
     Duration? duration,
     Duration? position,
     bool? isPlaying,
+    double? volume,
   }) {
     return PlayingState(
       currentIndex: currentIndex ?? this.currentIndex,
       duration: duration ?? this.duration,
       position: position ?? this.position,
       isPlaying: isPlaying ?? this.isPlaying,
+      volume: volume ?? this.volume
     );
   }
 }

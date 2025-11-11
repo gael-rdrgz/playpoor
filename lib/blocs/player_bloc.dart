@@ -23,6 +23,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     on<PrevEvent>(cambiandoAnterior);
     on<NextEvent>(cambiandoSiguiente);
     on<SeekEvent>(cambiandoPosicion);
+    on<VolumeChangedEvent>(volumenCambiado);
     setup();
   }
 
@@ -84,6 +85,11 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
       completo?.pause();
       _canAutoAdvance = false;
       emit(LoadingState()); //mandar estado a la ui
+
+      final currentVolume = state is PlayingState
+          ? (state as PlayingState).volume
+          : 1.0;
+
       await audioPlayer?.stop();
       await audioPlayer?.setSourceAsset(canciones[event.index].assetPath);
 
@@ -95,9 +101,12 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
           duration: duration ?? Duration.zero,
           position: Duration.zero,
           isPlaying: true,
+          volume: currentVolume
         ),
       );
+
       completo?.resume();
+      await audioPlayer.setVolume(currentVolume);
       add(PlayEvent());
     } catch (e) {
       emit(
@@ -217,5 +226,14 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     Emitter<PlayState> emit,
   ) async {
     await audioPlayer.seek(event.position);
+  }
+
+  FutureOr<void> volumenCambiado(VolumeChangedEvent event, Emitter<PlayState> emit) async {
+    if (state is PlayingState){
+      final estado = state as PlayingState;
+      emit(estado.copyWith(volume: event.volume));
+
+      await audioPlayer.setVolume(event.volume);
+    }
   }
 }
