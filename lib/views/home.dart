@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:playerbloc/views/player.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
   AudioPlayer? audioPlayer;
   @override
   void initState() {

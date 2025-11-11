@@ -1,4 +1,4 @@
-import 'package:audioplayers/src/audioplayer.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,13 +17,13 @@ import 'conf_modal.dart';
 class Player extends StatefulWidget {
   final AudioPlayer audioPlayer;
 
-  const Player({Key? key, required this.audioPlayer}) : super(key: key);
+  const Player({super.key, required this.audioPlayer});
 
   @override
-  _PlayerState createState() => _PlayerState();
+  PlayerState createState() => PlayerState();
 }
 
-class _PlayerState extends State<Player> {
+class PlayerState extends State<Player> {
   final List<AudioItem> canciones = [
     AudioItem("allthat.mp3", "All that", "Keyra", "assets/allthat_colored.jpg"),
     AudioItem("love.mp3", "Love", "Gael", "assets/love_colored.jpg"),

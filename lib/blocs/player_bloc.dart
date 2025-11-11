@@ -95,8 +95,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
           ? (state as PlayingState).playSpeed
           : 1.0;
 
-      await audioPlayer?.stop();
-      await audioPlayer?.setSourceAsset(canciones[event.index].assetPath);
+      await audioPlayer.stop();
+      await audioPlayer.setSourceAsset(canciones[event.index].assetPath);
 
       final duration = await audioPlayer.getDuration();
 
@@ -126,7 +126,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     //si está en estado de reproduccion
     if (state is PlayingState) {
       try {
-        await audioPlayer?.resume();
+        await audioPlayer.resume();
         //await audioPlayer?.pause();
 
         final PlayingState estadoActual = state as PlayingState;

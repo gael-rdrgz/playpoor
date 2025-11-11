@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:playerbloc/blocs/player_state.dart';
 
 class InitialState extends PlayState {}
