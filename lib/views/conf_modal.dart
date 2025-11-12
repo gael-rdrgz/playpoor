@@ -237,7 +237,7 @@ class ConfModal extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      spacing: 26,
+                      //spacing: 26,
                       children: [
                         Column(
                           children: [
