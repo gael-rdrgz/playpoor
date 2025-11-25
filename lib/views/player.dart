@@ -75,6 +75,18 @@ class PlayerState extends State<Player> {
       artist: "Ed Maverick",
       imagePath: "assets/ortiz.jpg",
     ),
+    AudioItem(
+      assetPath: "lapuTighttrope.mp3",
+      title: "Tightrope",
+      artist: "LP",
+      imagePath: "assets/lapuReal.jpg",
+    ),
+    AudioItem(
+      assetPath: "gSpotMichael.mp3",
+      title: "G-Spot Michael",
+      artist: "Lindemann",
+      imagePath: "assets/lindemann.jpg",
+    ),
   ];
 
   final dbHelper = DatabaseHelper.instance;

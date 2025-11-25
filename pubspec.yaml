@@ -115,6 +115,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/lapuCuerdaFloja.jpg
     - assets/fonts/
     - assets/icon/
 

@@ -80,14 +80,20 @@ class DatabaseHelper {
   Future<void> loadAudioList(List<AudioItem> audioList) async {
     final db = await instance.getDatabase();
 
-    final dbLength = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM audioitem"));
+    for (final audioItem in audioList) {
+      // Verifica si ya existe por assetPath o título
+      final existing = await db.query(
+        "audioitem",
+        where: "assetPath = ? AND title = ?",
+        whereArgs: [audioItem.assetPath, audioItem.title],
+      );
 
-    if (dbLength == 0){
-      for (final element in audioList){
-        await create(element);
+      if (existing.isEmpty) {
+        await create(audioItem);
+        print("Insertada: ${audioItem.title}");
+      } else {
+        print("Ya existe: ${audioItem.title}");
       }
-    } else {
-      print("Las canciones ya estaban cargadas");
     }
   }
 
