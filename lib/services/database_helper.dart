@@ -39,6 +39,10 @@ class DatabaseHelper {
     if (Platform.isAndroid || Platform.isIOS || Platform.isFuchsia) {
       dbPath = await getDatabasesPath();
       path = join(dbPath, filePath);
+
+      // Imprime la ruta para verificar
+      print("---------Ruta de la base de datos: $path");
+
       return await openDatabase(path, version: 1, onCreate: onCreate);
     }
   }
