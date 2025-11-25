@@ -45,6 +45,12 @@ dependencies:
   flutter_bloc: ^9.1.1
   equatable: ^2.0.7
 
+  #dependencias para sqlite
+  sqflite: ^2.4.2
+  path_provider: ^2.1.5
+  path: ^1.9.1
+  sqflite_common_ffi: ^2.3.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

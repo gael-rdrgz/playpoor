@@ -5,11 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:playerbloc/blocs/player_bloc.dart';
 import 'package:playerbloc/blocs/player_load_events.dart';
+import 'package:playerbloc/services/database_helper.dart';
 import 'package:playerbloc/views/artist.dart';
 import 'package:playerbloc/views/botonera.dart';
 import 'package:playerbloc/views/left_pane_drawer.dart';
 import 'package:playerbloc/views/progress_slider.dart';
 import 'package:playerbloc/views/swiper.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../models/audio_item.dart';
 import 'conf_modal.dart';
@@ -25,61 +27,85 @@ class Player extends StatefulWidget {
 
 class PlayerState extends State<Player> {
   final List<AudioItem> canciones = [
-    AudioItem("allthat.mp3", "All that", "Keyra", "assets/allthat_colored.jpg"),
-    AudioItem("love.mp3", "Love", "Gael", "assets/love_colored.jpg"),
     AudioItem(
-      "thejazzpiano.mp3",
-      "Jazz Piano",
-      "Abram",
-      "assets/thejazzpiano_colored.jpg",
+      assetPath: "allthat.mp3",
+      title: "All that",
+      artist: "Keyra",
+      imagePath: "assets/allthat_colored.jpg",
     ),
     AudioItem(
-      "hollow_knight.mp3",
-      "Hollow Knight",
-      "Christopher Larkin",
-      "assets/hollow_knight.jpg",
+      assetPath: "love.mp3",
+      title: "Love",
+      artist: "Gael",
+      imagePath: "assets/love_colored.jpg",
     ),
     AudioItem(
-      "silksong.mp3",
-      "Silksong",
-      "Christopher Larkin",
-      "assets/silksong.jpg",
+      assetPath: "thejazzpiano.mp3",
+      title: "Jazz Piano",
+      artist: "Abram",
+      imagePath: "assets/thejazzpiano_colored.jpg",
     ),
     AudioItem(
-      "main_theme.mp3",
-      "Main Theme",
-      "Gareth Coker",
-      "assets/orimain.jpg",
+      assetPath: "hollow_knight.mp3",
+      title: "Hollow Knight",
+      artist: "Christopher Larkin",
+      imagePath: "assets/hollow_knight.jpg",
     ),
     AudioItem(
-      "elden_ring.mp3",
-      "Elden Ring",
-      "Tsukasa Saitoh",
-      "assets/eldenring.png",
+      assetPath: "silksong.mp3",
+      title: "Silksong",
+      artist: "Christopher Larkin",
+      imagePath: "assets/silksong.jpg",
     ),
     AudioItem(
-      "fuentes_de_gael.mp3",
-      "Fuentes De Ortiz",
-      "Ed Maverick",
-      "assets/ortiz.jpg",
+      assetPath: "main_theme.mp3",
+      title: "Main Theme",
+      artist: "Gareth Coker",
+      imagePath: "assets/orimain.jpg",
+    ),
+    AudioItem(
+      assetPath: "elden_ring.mp3",
+      title: "Elden Ring",
+      artist: "Tsukasa Saitoh",
+      imagePath: "assets/eldenring.png",
+    ),
+    AudioItem(
+      assetPath: "fuentes_de_gael.mp3",
+      title: "Fuentes De Ortiz",
+      artist: "Ed Maverick",
+      imagePath: "assets/ortiz.jpg",
     ),
   ];
+
+  final dbHelper = DatabaseHelper.instance;
 
   final GlobalKey<SliderDrawerState> _drawerKey =
       GlobalKey<SliderDrawerState>();
 
   PageController? pageController;
 
-  late final PlayerBloc bloc = PlayerBloc(
-    audioPlayer: widget.audioPlayer,
-    canciones: canciones,
-  );
+  late final PlayerBloc bloc;
 
   @override
   void initState() {
     pageController = PageController(viewportFraction: .8);
-    bloc.add(PlayerLoadEvent(0));
+    initSongs();
     super.initState();
+  }
+
+  Future<void> initSongs() async {
+    await dbHelper.loadAudioList(canciones);
+
+    final cancionesBD = await dbHelper.readAll();
+
+    setState(() {
+      canciones
+        ..clear()
+        ..addAll(cancionesBD);
+    }); //reiniciar lista de canciones para tomar registros de la bd
+
+    bloc = PlayerBloc(audioPlayer: widget.audioPlayer, canciones: canciones);
+    bloc.add(PlayerLoadEvent(0));
   }
 
   @override
