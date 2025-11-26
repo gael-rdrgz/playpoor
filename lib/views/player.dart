@@ -105,6 +105,8 @@ class PlayerState extends State<Player> {
     super.initState();
   }
 
+  bool isLoading = true;
+
   Future<void> initSongs() async {
     await dbHelper.loadAudioList(canciones);
 
@@ -114,9 +116,12 @@ class PlayerState extends State<Player> {
       canciones
         ..clear()
         ..addAll(cancionesBD);
-    }); //reiniciar lista de canciones para tomar registros de la bd
 
-    bloc = PlayerBloc(audioPlayer: widget.audioPlayer, canciones: canciones);
+      bloc = PlayerBloc(audioPlayer: widget.audioPlayer, canciones: canciones);
+
+      isLoading = false;
+    });
+
     bloc.add(PlayerLoadEvent(0));
   }
 
@@ -129,59 +134,66 @@ class PlayerState extends State<Player> {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-    return BlocProvider.value(
-      value: bloc,
 
-      child: Scaffold(
-        body: SafeArea(
-          top: true,
-          child: SliderDrawer(
-            key: _drawerKey,
-            slider: LeftPaneDrawer(bloc: bloc),
-            appBar: SliderAppBar(
-              config: SliderAppBarConfig(
-                title: Text(
-                  "PlayPoor",
-                  style: TextStyle(
-                    color: Color(0xff2b0d0d),
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "DMSerif",
+    if (!isLoading){
+      return BlocProvider.value(
+        value: bloc,
+
+        child: Scaffold(
+          body: SafeArea(
+            top: true,
+            child: SliderDrawer(
+              key: _drawerKey,
+              slider: LeftPaneDrawer(bloc: bloc),
+              appBar: SliderAppBar(
+                config: SliderAppBarConfig(
+                  title: Text(
+                    "PlayPoor",
+                    style: TextStyle(
+                      color: Color(0xff2b0d0d),
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "DMSerif",
+                    ),
                   ),
-                ),
-                trailing: IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ConfModal(bloc: bloc);
-                      },
-                    );
-                  },
-                  icon: Icon(Icons.settings),
-                  iconSize: 24,
+                  trailing: IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ConfModal(bloc: bloc);
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.settings),
+                    iconSize: 24,
+                  ),
                 ),
               ),
-            ),
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Swiper(
-                    pageController: pageController!,
-                    audioList: canciones,
-                    color: Color(0xffa23e48),
-                    bloc: bloc,
-                  ),
-                  Artist(),
-                  ProgressSlider(color: Color(0xffc84b64)),
-                  Botonera(color: Color(0xffc84b64)),
-                ],
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Swiper(
+                      pageController: pageController!,
+                      audioList: canciones,
+                      color: Color(0xffa23e48),
+                      bloc: bloc,
+                    ),
+                    Artist(),
+                    ProgressSlider(color: Color(0xffc84b64)),
+                    Botonera(color: Color(0xffc84b64)),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator(color: Color(0xffa23e48),)),
+      );
+    }
   }
 
   @override
