@@ -87,6 +87,12 @@ class PlayerState extends State<Player> {
       artist: "Lindemann",
       imagePath: "assets/lindemann.jpg",
     ),
+    AudioItem(
+      assetPath: "last_christmas.mp3",
+      title: "Last Christmas",
+      artist: "Wham!",
+      imagePath: "assets/last_christmas.png",
+    ),
   ];
 
   final dbHelper = DatabaseHelper.instance;
@@ -115,7 +121,9 @@ class PlayerState extends State<Player> {
     setState(() {
       canciones
         ..clear()
-        ..addAll(cancionesBD);
+        ..addAll(
+          cancionesBD,
+        ); //vaciar lista original y llenarla con los registros de la bd
 
       bloc = PlayerBloc(audioPlayer: widget.audioPlayer, canciones: canciones);
 
@@ -135,7 +143,7 @@ class PlayerState extends State<Player> {
       ),
     );
 
-    if (!isLoading){
+    if (!isLoading) {
       return BlocProvider.value(
         value: bloc,
 
@@ -191,7 +199,9 @@ class PlayerState extends State<Player> {
       );
     } else {
       return Scaffold(
-        body: Center(child: CircularProgressIndicator(color: Color(0xffa23e48),)),
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xffa23e48)),
+        ),
       );
     }
   }
