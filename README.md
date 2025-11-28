@@ -1,6 +1,6 @@
-# playerbloc
+# PlayPoor
 
-Reproductor MP3 con arquitectura bloc.
+Reproductor MP3 con arquitectura BLoC y persistencia de datos con SQLite.
 
 ## Getting Started
 
