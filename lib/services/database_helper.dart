@@ -18,7 +18,6 @@ class DatabaseHelper {
     if (_database != null) {
       return _database!;
     } else {
-      //la bd no esta inicializada
       _database = await initDB("playpoor.db");
       return _database!;
     }

@@ -96,13 +96,13 @@ class PlayerState extends State<Player> {
   ];
 
   final dbHelper = DatabaseHelper.instance;
+  bool isLoading = true;
+  late final PlayerBloc bloc;
 
   final GlobalKey<SliderDrawerState> _drawerKey =
       GlobalKey<SliderDrawerState>();
 
   PageController? pageController;
-
-  late final PlayerBloc bloc;
 
   @override
   void initState() {
@@ -110,8 +110,6 @@ class PlayerState extends State<Player> {
     initSongs();
     super.initState();
   }
-
-  bool isLoading = true;
 
   Future<void> initSongs() async {
     await dbHelper.loadAudioList(canciones);
